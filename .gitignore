@@ -1,0 +1,3 @@
+# exclude build directory and vs-code
+build/
+.vscode/

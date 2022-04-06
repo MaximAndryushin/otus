@@ -1,6 +1,9 @@
 name: 'C++ CI'
 
-on: [push]
+on: 
+  push: 
+    branches:
+      - 'hw1'
 
 jobs:
   build:

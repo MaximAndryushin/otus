@@ -3,8 +3,7 @@
 #include <vector>
 
 template<typename TFunctor>
-auto split(const std::string &str, char d, TFunctor functor) -> std::vector<std::invoke_result_t<TFunctor, std::string>>
-{
+auto split(const std::string &str, char d, TFunctor functor) -> std::vector<std::invoke_result_t<TFunctor, std::string>> {
     using RetType = std::vector<std::invoke_result_t<TFunctor, std::string>>;
     RetType r;
 
@@ -48,18 +47,17 @@ std::ostream& operator<<(std::ostream& out, const std::vector<std::vector<T>>& v
     return out;
 }
 
-int main()
-{
-    try
-    {
-        std::vector<std::vector<unsigned char>> ip_pool;
+int main() {
+    using TypeForStoringAddresses = unsigned char;
+    
+    try {
+        std::vector<std::vector<TypeForStoringAddresses>> ip_pool;
 
-        for(std::string line; std::getline(std::cin, line);)
-        {
+        for(std::string line; std::getline(std::cin, line);) {
             auto v = split(line, '\t', [](const std::string& str) { return str; });
-            ip_pool.emplace_back(std::move(split(v.at(0), '.', [](const std::string& str) { 
-                return static_cast<unsigned char>(std::stoi(str)); 
-            })));
+            ip_pool.emplace_back(split(v.at(0), '.', [](const std::string& str) { 
+                return static_cast<TypeForStoringAddresses>(std::stoi(str)); 
+            }));
         }
 
         std::sort(ip_pool.begin(), ip_pool.end(), std::greater<>());
@@ -76,7 +74,7 @@ int main()
 
         // TODO filter by first byte and output
         // ip = filter(1)
-        std::cout << filter(ip_pool, [](const std::vector<unsigned char>& ip) {
+        std::cout << filter(ip_pool, [](const std::vector<TypeForStoringAddresses>& ip) {
             return ip.at(0) == 1;
         });
 
@@ -89,7 +87,7 @@ int main()
         // TODO filter by first and second bytes and output
         // ip = filter(46, 70)
 
-        std::cout << filter(ip_pool, [](const std::vector<unsigned char>& ip) {
+        std::cout << filter(ip_pool, [](const std::vector<TypeForStoringAddresses>& ip) {
             return ip.at(0) == 46 && ip.at(1) == 70;
         });
 
@@ -101,7 +99,7 @@ int main()
         // TODO filter by any byte and output
         // ip = filter_any(46)
 
-        std::cout << filter(ip_pool, [](const std::vector<unsigned char>& ip) {
+        std::cout << filter(ip_pool, [](const std::vector<TypeForStoringAddresses>& ip) {
             return ip.at(0) == 46 || ip.at(1) == 46 || ip.at(2) == 46 || ip.at(3) == 46;
         });
 
@@ -139,9 +137,7 @@ int main()
         // 46.49.43.85
         // 39.46.86.85
         // 5.189.203.46
-    }
-    catch(const std::exception &e)
-    {
+    } catch(const std::exception &e) {
         std::cerr << e.what() << std::endl;
     }
 

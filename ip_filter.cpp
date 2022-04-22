@@ -101,7 +101,7 @@ int main() {
         // ip = filter_any(46)
 
         std::cout << filter(ip_pool, [](const std::vector<TypeForStoringAddresses>& ip) {
-            return ip.at(0) == 46 || ip.at(1) == 46 || ip.at(2) == 46 || ip.at(3) == 46;
+            return find(ip.begin(), ip.end(), 46) != ip.end();
         });
 
         // 186.204.34.46
